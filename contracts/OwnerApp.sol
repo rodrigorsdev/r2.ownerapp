@@ -73,7 +73,7 @@ contract OwnerApp {
     }
 
     function delOwner(address _address) public onlyOwner onlyApproved ownerExist(_address) {
-        require(quantOwner >= minApproval, "quantOwner must be equal or greater than minApproval");
+        require(quantOwner-1 >= minApproval, "quantOwner must be equal or greater than minApproval");
         require(msg.sender != _address, "address can not remove yourself");
         owner[_address] = false;
         quantOwner -= 1;
