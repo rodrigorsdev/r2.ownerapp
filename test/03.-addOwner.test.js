@@ -11,30 +11,30 @@ contract('OwnerApp - addOwner test', (accounts) => {
         web3.eth.defaultAccount = ownerAddress0;
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
         contractInstance = await OwnerApp.new();
     });
 
-    it('addOwner should throw if is not owner', async() => {
+    it('addOwner should throw if is not owner', async () => {
         await Assert.reverts(
             contractInstance.addOwner(ownerAddress1, { from: noOwnerAddress }),
             'address must be owner');
     });
 
-    it('addOwner should throw if is not approved', async() => {
+    it('addOwner should throw if is not approved', async () => {
         await Assert.reverts(
             contractInstance.addOwner(ownerAddress1, { from: ownerAddress0 }),
             'current approvals is less then minimum');
     });
 
-    it('addOwner should throw if owner already exists', async() => {
+    it('addOwner should throw if owner already exists', async () => {
         await contractInstance.doApproval({ from: ownerAddress0 });
         await Assert.reverts(
             contractInstance.addOwner(ownerAddress0, { from: ownerAddress0 }),
             'owner exists');
     });
 
-    it('addOwner success', async() => {
+    it('addOwner success', async () => {
         await contractInstance.doApproval({ from: ownerAddress0 });
         await contractInstance.addOwner(ownerAddress1, { from: ownerAddress0 });
         var result = await contractInstance.quantOwner();

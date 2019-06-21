@@ -11,30 +11,30 @@ contract('OwnerApp - changeMinApproval test', (accounts) => {
         web3.eth.defaultAccount = ownerAddress0;
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
         contractInstance = await OwnerApp.new();
     });
 
-    it('changeMinApproval should throw if is not owner', async() => {
+    it('changeMinApproval should throw if is not owner', async () => {
         await Assert.reverts(
             contractInstance.changeMinApproval(2, { from: noOwnerAddress }),
             'address must be owner');
     });
 
-    it('changeMinApproval should throw if is not approved', async() => {
+    it('changeMinApproval should throw if is not approved', async () => {
         await Assert.reverts(
             contractInstance.changeMinApproval(2, { from: ownerAddress0 }),
             'current approvals is less then minimum');
     });
 
-    it('changeMinApproval should throw if min approval is less than owner', async() => {
+    it('changeMinApproval should throw if min approval is less than owner', async () => {
         await contractInstance.doApproval({ from: ownerAddress0 });
         await Assert.reverts(
             contractInstance.changeMinApproval(2, { from: ownerAddress0 }),
             'minApproval must be equal or less than quantOwner');
     });
 
-    it('changeMinApproval success', async() => {
+    it('changeMinApproval success', async () => {
         await contractInstance.doApproval({ from: ownerAddress0 });
         await contractInstance.addOwner(ownerAddress1, { from: ownerAddress0 });
         await contractInstance.doApproval({ from: ownerAddress0 });

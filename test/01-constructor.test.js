@@ -1,5 +1,4 @@
 const OwnerApp = artifacts.require('../contracts/OwnerApp');
-const Assert = require('truffle-assertions');
 
 contract('OwnerApp - constructor test', (accounts) => {
     let contractInstance;
@@ -9,22 +8,27 @@ contract('OwnerApp - constructor test', (accounts) => {
         web3.eth.defaultAccount = ownerAddress;
     });
 
-    beforeEach(async() => {
+    beforeEach(async () => {
         contractInstance = await OwnerApp.new();
     });
 
-    it('initialize with array approval with address zero', async() => {
+    it('initialize with array approval with address zero', async () => {
         const result = await contractInstance.owner(ownerAddress);
         assert.equal(result, true, 'owner is wrong at create');
     });
 
-    it('initialize with minApproval equals 1', async() => {
+    it('initialize with minApproval equals 1', async () => {
         const result = await contractInstance.minApproval();
         assert.equal(result, 1, 'minApproval is wrong at create');
     });
 
-    it('initialize with quantOwner equals 1', async() => {
+    it('initialize with quantOwner equals 1', async () => {
         const result = await contractInstance.quantOwner();
         assert.equal(result, 1, 'minApproval is wrong at create');
+    });
+
+    it('initialize with arrayApproval position 0 with empty address', async () => {
+        const result = await contractInstance.arrayApproval.call(0);
+        assert.equal(result, 0x0000000000000000000000000000000000000000, 'minApproval is wrong at create');
     });
 });
